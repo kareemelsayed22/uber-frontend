@@ -1,33 +1,33 @@
 import React from 'react';
-class App extends React.Component {
+class Drivers extends React.Component {
   constructor() {
     super()
     this.state = {
       isLoaded: false,
-      users: [],
-      user: {
-        username: '',
-        password: '',
+      drivers: [],
+      driver: {
+        userId: '',
+        lattitude: '',
       },
       newChange: false
     }
-    this.handleUsernameChange = this.handleUsernameChange.bind(this)
-    this.handlePasswordChange = this.handlePasswordChange.bind(this)
+    this.handleUserIdChange = this.handleUserIdChange.bind(this)
+    this.handleLattitudeChange = this.handleLattitudeChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
   componentDidMount() {
-    this.getUsers()
+    this.getDrivers()
   }
   componentDidUpdate() {
-    if (this.state.newChange) this.getUsers()
+    if (this.state.newChange) this.getDrivers()
   }
-  handleUsernameChange(event) {
+  handleUserIdChange(event) {
     this.setState({
-      user: Object.assign(
+      driver: Object.assign(
         {},
-        this.state.user,
+        this.state.driver,
         {
-        username: event.target.value
+        userId: event.target.value
         }
       )
   });
@@ -35,15 +35,15 @@ class App extends React.Component {
   // function that does a call similar to the postman request
   // fetch returns a promise w.i a asynchronous function
   // return val from response is now equal to result from API call
-  getUsers() {
-    fetch("http://localhost:3000/users")
+  getDrivers() {
+    fetch("http://localhost:3000/drivers")
       .then(res => res.json())
       .then(
         (result) => {
           console.log('result', result)
           this.setState({
             isLoaded: true,
-            users: result,
+            drivers: result,
             newChange: false
           });
         },
@@ -58,29 +58,34 @@ class App extends React.Component {
         }
       )
   }
-  handlePasswordChange(event) {
+  handleLattitudeChange(event) {
 
     this.setState({
-      user: Object.assign(
+      driver: Object.assign(
         {},
-        this.state.user,
+        this.state.driver,
         {
-        password: event.target.value
+        lattitude: event.target.value
         }
       )
   });
   }
   handleSubmit() {
 
-    const user = {
-      password: this.state.user.password,
-      username: this.state.user.username
+    const driver = {
+      driver:
+
+    {
+      lattitude: this.state.driver.lattitude,
+      userId: this.state.driver.userId
     }
-    console.log('user', user)
-    const url = "http://localhost:3000/users"
-    const userResponse = fetch(url, {
+
+    }
+    console.log('driver', driver)
+    const url = "http://localhost:3000/drivers"
+    const driverResponse = fetch(url, {
       method: 'POST',
-      body: JSON.stringify(user)
+      body: JSON.stringify(driver)
     }).then((response) => {
       const json = response.json()
       console.log('first response json', json)
@@ -94,7 +99,7 @@ class App extends React.Component {
       })
       return json
     })
-    return userResponse
+    return driverResponse
   }
   render() {
     const mystyle = {
@@ -113,32 +118,28 @@ class App extends React.Component {
 
     };
 
-
-    console.log('username', this.state.user.username)
-    console.log('password', this.state.user.password)
+    console.log('userId', this.state.driver.userId)
+    console.log('lattitude', this.state.driver.lattitude)
     return (
-      <div className="App">
-      <h1 style={centered}> Users Form </h1>
-        <form style={centered}>
-  <label>username:
-
-    <input type="text" name="username" value={this.state.user.username} onChange={this.handleUsernameChange} />
-
+      <div className="Drivers">
+      <h1 style={centered}> Drivers Form </h1>
+        <form>
+  <label>
+    userId:
+    <input type="text" name="userId" value={this.state.driver.userId} onChange={this.handleUserIdChange} />
   </label>
-  <label>password:
-
-    <input type="text" name="password" value={this.state.user.password} onChange={this.handlePasswordChange} />
-
+  <label>
+    lattitude:
+    <input type="text" name="lattitude" value={this.state.driver.lattitude} onChange={this.handleLattitudeChange} />
   </label>
-    
-  <div style={mystyle} onClick={this.handleSubmit}>Create User</div>
+  <div style={mystyle} onClick={this.handleSubmit}>Create Driver</div>
 </form>
 
 
 
-        {this.state.users.map((user) => <div>{user.username}</div>)}
+        {this.state.drivers.map((driver) => <div>{driver.userId}</div>)}
       </div>
     );  }
 }
 
-export default App;
+export default Drivers;

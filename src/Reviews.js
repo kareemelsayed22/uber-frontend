@@ -1,33 +1,33 @@
 import React from 'react';
-class App extends React.Component {
+class Reviews extends React.Component {
   constructor() {
     super()
     this.state = {
       isLoaded: false,
-      users: [],
-      user: {
-        username: '',
-        password: '',
+      reviews: [],
+      review: {
+        rideId: '',
+        star: '',
       },
       newChange: false
     }
-    this.handleUsernameChange = this.handleUsernameChange.bind(this)
-    this.handlePasswordChange = this.handlePasswordChange.bind(this)
+    this.handleRideIdChange = this.handleRideIdChange.bind(this)
+    this.handleStarChange = this.handleStarChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
   componentDidMount() {
-    this.getUsers()
+    this.getReviews()
   }
   componentDidUpdate() {
-    if (this.state.newChange) this.getUsers()
+    if (this.state.newChange) this.getReviews()
   }
-  handleUsernameChange(event) {
+  handleRideIdChange(event) {
     this.setState({
-      user: Object.assign(
+      review: Object.assign(
         {},
-        this.state.user,
+        this.state.review,
         {
-        username: event.target.value
+        rideId: event.target.value
         }
       )
   });
@@ -35,15 +35,15 @@ class App extends React.Component {
   // function that does a call similar to the postman request
   // fetch returns a promise w.i a asynchronous function
   // return val from response is now equal to result from API call
-  getUsers() {
-    fetch("http://localhost:3000/users")
+  getReviews() {
+    fetch("http://localhost:3000/reviews")
       .then(res => res.json())
       .then(
         (result) => {
           console.log('result', result)
           this.setState({
             isLoaded: true,
-            users: result,
+            reviews: result,
             newChange: false
           });
         },
@@ -58,29 +58,34 @@ class App extends React.Component {
         }
       )
   }
-  handlePasswordChange(event) {
+  handleStarChange(event) {
 
     this.setState({
-      user: Object.assign(
+      review: Object.assign(
         {},
-        this.state.user,
+        this.state.review,
         {
-        password: event.target.value
+        star: event.target.value
         }
       )
   });
   }
   handleSubmit() {
 
-    const user = {
-      password: this.state.user.password,
-      username: this.state.user.username
+    const review = {
+      review:
+
+    {
+      star: this.state.review.star,
+      rideId: this.state.review.rideId
     }
-    console.log('user', user)
-    const url = "http://localhost:3000/users"
-    const userResponse = fetch(url, {
+
+    }
+    console.log('review', review)
+    const url = "http://localhost:3000/reviews"
+    const reviewResponse = fetch(url, {
       method: 'POST',
-      body: JSON.stringify(user)
+      body: JSON.stringify(review)
     }).then((response) => {
       const json = response.json()
       console.log('first response json', json)
@@ -94,7 +99,7 @@ class App extends React.Component {
       })
       return json
     })
-    return userResponse
+    return reviewResponse
   }
   render() {
     const mystyle = {
@@ -106,6 +111,7 @@ class App extends React.Component {
       width: "10em"
 
     };
+
     const centered = {
 
       display: 'flex',
@@ -113,32 +119,29 @@ class App extends React.Component {
 
     };
 
-
-    console.log('username', this.state.user.username)
-    console.log('password', this.state.user.password)
+    console.log('rideId', this.state.review.rideId)
+    console.log('star', this.state.review.star)
     return (
-      <div className="App">
-      <h1 style={centered}> Users Form </h1>
-        <form style={centered}>
-  <label>username:
+      <div className="Reviews">
+      <h1 style={centered}> Reviews Form </h1>
 
-    <input type="text" name="username" value={this.state.user.username} onChange={this.handleUsernameChange} />
-
+        <form>
+  <label>
+    rideId:
+    <input type="text" name="rideId" value={this.state.review.rideId} onChange={this.handleRideIdChange} />
   </label>
-  <label>password:
-
-    <input type="text" name="password" value={this.state.user.password} onChange={this.handlePasswordChange} />
-
+  <label>
+    star:
+    <input type="text" name="star" value={this.state.review.star} onChange={this.handleStarChange} />
   </label>
-    
-  <div style={mystyle} onClick={this.handleSubmit}>Create User</div>
+  <div style={mystyle} onClick={this.handleSubmit}>Create Review</div>
 </form>
 
 
 
-        {this.state.users.map((user) => <div>{user.username}</div>)}
+        {this.state.reviews.map((review) => <div>{review.rideId}</div>)}
       </div>
     );  }
 }
 
-export default App;
+export default Reviews;

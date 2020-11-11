@@ -2,11 +2,27 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import Drivers from './Drivers';
+import Messages from './Messages';
+import Passengers from './Passengers';
+import Reviews from './Reviews';
+import Rides from './Rides';
+
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
     <App />
+    <Drivers />
+    <Messages />
+    <Passengers />
+    <Reviews />
+    <Rides />
+
+
+
+
+
   </React.StrictMode>,
   document.getElementById('root')
 );

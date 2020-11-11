@@ -1,33 +1,33 @@
 import React from 'react';
-class App extends React.Component {
+class Passengers extends React.Component {
   constructor() {
     super()
     this.state = {
       isLoaded: false,
-      users: [],
-      user: {
-        username: '',
-        password: '',
+      passengers: [],
+      passenger: {
+        userId: '',
+        lattitude: '',
       },
       newChange: false
     }
-    this.handleUsernameChange = this.handleUsernameChange.bind(this)
-    this.handlePasswordChange = this.handlePasswordChange.bind(this)
+    this.handleUserIdChange = this.handleUserIdChange.bind(this)
+    this.handleLattitudeChange = this.handleLattitudeChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
   componentDidMount() {
-    this.getUsers()
+    this.getPassengers()
   }
   componentDidUpdate() {
-    if (this.state.newChange) this.getUsers()
+    if (this.state.newChange) this.getPassengers()
   }
-  handleUsernameChange(event) {
+  handleUserIdChange(event) {
     this.setState({
-      user: Object.assign(
+      passenger: Object.assign(
         {},
-        this.state.user,
+        this.state.passenger,
         {
-        username: event.target.value
+        userId: event.target.value
         }
       )
   });
@@ -35,15 +35,15 @@ class App extends React.Component {
   // function that does a call similar to the postman request
   // fetch returns a promise w.i a asynchronous function
   // return val from response is now equal to result from API call
-  getUsers() {
-    fetch("http://localhost:3000/users")
+  getPassengers() {
+    fetch("http://localhost:3000/passengers")
       .then(res => res.json())
       .then(
         (result) => {
           console.log('result', result)
           this.setState({
             isLoaded: true,
-            users: result,
+            passengers: result,
             newChange: false
           });
         },
@@ -58,29 +58,34 @@ class App extends React.Component {
         }
       )
   }
-  handlePasswordChange(event) {
+  handleLattitudeChange(event) {
 
     this.setState({
-      user: Object.assign(
+      passenger: Object.assign(
         {},
-        this.state.user,
+        this.state.passenger,
         {
-        password: event.target.value
+        lattitude: event.target.value
         }
       )
   });
   }
   handleSubmit() {
 
-    const user = {
-      password: this.state.user.password,
-      username: this.state.user.username
+    const passenger = {
+      passenger:
+
+    {
+      lattitude: this.state.passenger.lattitude,
+      userId: this.state.passenger.userId
     }
-    console.log('user', user)
-    const url = "http://localhost:3000/users"
-    const userResponse = fetch(url, {
+
+    }
+    console.log('passenger', passenger)
+    const url = "http://localhost:3000/passengers"
+    const passengerResponse = fetch(url, {
       method: 'POST',
-      body: JSON.stringify(user)
+      body: JSON.stringify(passenger)
     }).then((response) => {
       const json = response.json()
       console.log('first response json', json)
@@ -94,7 +99,7 @@ class App extends React.Component {
       })
       return json
     })
-    return userResponse
+    return passengerResponse
   }
   render() {
     const mystyle = {
@@ -106,6 +111,7 @@ class App extends React.Component {
       width: "10em"
 
     };
+
     const centered = {
 
       display: 'flex',
@@ -113,32 +119,29 @@ class App extends React.Component {
 
     };
 
-
-    console.log('username', this.state.user.username)
-    console.log('password', this.state.user.password)
+    console.log('userId', this.state.passenger.userId)
+    console.log('lattitude', this.state.passenger.lattitude)
     return (
-      <div className="App">
-      <h1 style={centered}> Users Form </h1>
-        <form style={centered}>
-  <label>username:
+      <div className="Passengers">
+      <h1 style={centered}> Passengers Form </h1>
 
-    <input type="text" name="username" value={this.state.user.username} onChange={this.handleUsernameChange} />
-
+        <form>
+  <label>
+    userId:
+    <input type="text" name="userId" value={this.state.passenger.userId} onChange={this.handleUserIdChange} />
   </label>
-  <label>password:
-
-    <input type="text" name="password" value={this.state.user.password} onChange={this.handlePasswordChange} />
-
+  <label>
+    lattitude:
+    <input type="text" name="lattitude" value={this.state.passenger.lattitude} onChange={this.handleLattitudeChange} />
   </label>
-    
-  <div style={mystyle} onClick={this.handleSubmit}>Create User</div>
+  <div style={mystyle} onClick={this.handleSubmit}>Create Passenger</div>
 </form>
 
 
 
-        {this.state.users.map((user) => <div>{user.username}</div>)}
+        {this.state.passengers.map((passenger) => <div>{passenger.userId}</div>)}
       </div>
     );  }
 }
 
-export default App;
+export default Passengers;
